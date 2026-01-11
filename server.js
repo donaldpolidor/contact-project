@@ -14,10 +14,22 @@ app.use(express.json());
 // Routes
 app.use('/contacts', contactRoutes);
 
-// Route de test
+// Route that returns “Hello World”
 app.get('/', (req, res) => {
-  res.json({ message: 'Contacts API is running!' });
+  res.send('Hello World');
 });
+
+// API info route 
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'Contacts API is running!',
+    version: '1.0.0',
+    endpoints: [
+      { method: 'GET', path: '/contacts', description: 'Get all contacts' },
+      { method: 'GET', path: '/contacts/:id', description: 'Get single contact' }
+    ]
+  });
+}); 
 
 // Connexion MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/contactsDB')
@@ -25,6 +37,9 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/contactsD
     console.log('Connected to MongoDB');
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      console.log(`Home: http://localhost:${PORT}`);
+      console.log(`API Info: http://localhost:${PORT}/api`);
+      console.log(`Contacts: http://localhost:${PORT}/contacts`);
     });
   })
   .catch(err => {
