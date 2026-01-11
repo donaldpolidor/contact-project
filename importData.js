@@ -7,11 +7,11 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(async () => {
     console.log('Connected to MongoDB');
     
-    // Vider la collection
+    // Empty the collection
     await Contact.deleteMany({});
     console.log('Existing contacts deleted');
     
-    // Insérer les nouveaux contacts
+    // Add new contacts
     const contacts = await Contact.insertMany(contactsData);
     console.log(`${contacts.length} contacts imported successfully`);
     
