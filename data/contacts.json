@@ -2,35 +2,35 @@
   {
     "firstName": "John",
     "lastName": "Doe",
-    "email": "john.doe@example.com",
+    "email": "johndoe@gmail.com",
     "favoriteColor": "Blue",
     "birthday": "1990-05-15"
   },
   {
     "firstName": "Jane",
     "lastName": "Smith",
-    "email": "jane.smith@example.com",
+    "email": "janesmith@gmail.com",
     "favoriteColor": "Green",
     "birthday": "1985-08-22"
   },
   {
     "firstName": "Robert",
     "lastName": "Johnson",
-    "email": "robert.j@example.com",
+    "email": "robertj@gmail.com",
     "favoriteColor": "Red",
     "birthday": "1992-11-30"
   },
   {
     "firstName": "Emily",
     "lastName": "Davis",
-    "email": "emily.davis@example.com",
+    "email": "emilydavis@gmail.com",
     "favoriteColor": "Purple",
     "birthday": "1988-03-10"
   },
   {
     "firstName": "Michael",
     "lastName": "Brown",
-    "email": "michael.b@example.com",
+    "email": "michaelb@gmail.com",
     "favoriteColor": "Yellow",
     "birthday": "1995-07-18"
   }
