@@ -3,28 +3,29 @@ const mongoose = require('mongoose');
 const contactSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
+    required: [true, 'First name is required'],
     trim: true
   },
   lastName: {
     type: String,
-    required: true,
+    required: [true, 'Last name is required'],
     trim: true
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     unique: true,
     lowercase: true,
-    trim: true
+    trim: true,
+    match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address']
   },
   favoriteColor: {
     type: String,
-    required: true
+    required: [true, 'Favorite color is required']
   },
   birthday: {
     type: Date,
-    required: true
+    required: [true, 'Birthday is required']
   }
 }, {
   timestamps: true

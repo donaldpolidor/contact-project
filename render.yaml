@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: contacts-api-swagger
+    env: node
+    region: ohio
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production

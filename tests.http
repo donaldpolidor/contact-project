@@ -1,0 +1,41 @@
+### Variables
+@baseUrl = http://localhost:3000
+@productionUrl = https://votre-app-render.onrender.com
+
+### 1. Test local development
+GET {{baseUrl}}
+
+### 2. Test production (after deployment)
+# GET {{productionUrl}}
+
+### 3. Swagger UI (local)
+GET {{baseUrl}}/api-docs
+
+### 4. Swagger UI (production)
+# GET {{productionUrl}}/api-docs
+
+### 5. Swagger JSON (local)
+GET {{baseUrl}}/swagger.json
+
+### 6. Health check (local)
+GET {{baseUrl}}/health
+
+### 7. Health check (production)
+# GET {{productionUrl}}/health
+
+### 8. Test all CRUD operations
+
+### Create a contact
+POST {{baseUrl}}/contacts
+Content-Type: application/json
+
+{
+  "firstName": "Swagger",
+  "lastName": "Test",
+  "email": "swagger.test@example.com",
+  "favoriteColor": "Orange",
+  "birthday": "2000-01-01"
+}
+
+### Get all contacts
+GET {{baseUrl}}/contacts

@@ -1,8 +1,12 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
-const contactRoutes = require('./routes/contact');
+const connectDB = require('./config/database');
+const contactRoutes = require('./routes/contactRoutes');
+const errorHandler = require('./middleware/errorHandler');
+
+// Connect to database
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,38 +14,64 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Routes
-app.use('/contacts', contactRoutes);
+// Route middleware - Using /api prefix for better API structure
+app.use('/api/contacts', contactRoutes);
 
-// Route that returns “Hello World”
+// Base route
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.json({
+    success: true,
+    message: 'Contacts API - MVC Structure',
+    version: '1.0.0',
+    endpoints: {
+      getContacts: 'GET /api/contacts',
+      getContact: 'GET /api/contacts/:id',
+      createContact: 'POST /api/contacts',
+      updateContact: 'PUT /api/contacts/:id',
+      deleteContact: 'DELETE /api/contacts/:id',
+      health: 'GET /health'
+    }
+  });
 });
 
-// API info route 
-app.get('/api', (req, res) => {
-  res.json({ 
-    message: 'Contacts API is running!',
-    version: '1.0.0',
-    endpoints: [
-      { method: 'GET', path: '/contacts', description: 'Get all contacts' },
-      { method: 'GET', path: '/contacts/:id', description: 'Get single contact' }
-    ]
+// Health check route
+app.get('/health', (req, res) => {
+  const mongoose = require('mongoose');
+  const mongoStatus = mongoose.connection.readyState;
+  const statusMessages = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting'
+  };
+  
+  res.json({
+    success: true,
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    mongodb: statusMessages[mongoStatus] || 'unknown'
   });
-}); 
+});
 
-// Connexion MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/contactsDB')
-  .then(() => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-      console.log(`Home: http://localhost:${PORT}`);
-      console.log(`API Info: http://localhost:${PORT}/api`);
-      console.log(`Contacts: http://localhost:${PORT}/contacts`);
-    });
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-  });
+// Error handler middleware (must be after routes)
+app.use(errorHandler);
+
+// Start server
+const server = app.listen(PORT, () => {
+  console.log(` Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  console.log(` Base URL: http://localhost:${PORT}`);
+  console.log(` Contacts API: http://localhost:${PORT}/api/contacts`);
+  console.log(`  Health Check: http://localhost:${PORT}/health`);
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (err, promise) => {
+  console.log(` Error: ${err.message}`);
+  // Close server & exit process
+  server.close(() => process.exit(1));
+});
+
+module.exports = app;
