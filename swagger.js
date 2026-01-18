@@ -20,12 +20,15 @@ const options = {
     },
     servers: [
       {
+        url: 'https://contact-project-8qvn.onrender.com',
+        description: 'Production server'
+      },
+      {
         url: 'http://localhost:3000',
         description: 'Development server'
       },
       {
-        url: 'https://contact-project-8qvn.onrender.com',
-        description: 'Production server'
+        
       }
     ],
     components: {
